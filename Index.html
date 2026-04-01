@@ -69,3 +69,42 @@ nft-revenue-engine/
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 OPENAI_API_KEY=sk-...
+async function generate(){
+
+  const idea = document.getElementById("idea").value;
+
+  if(!idea){
+    alert("Digite uma ideia primeiro");
+    return;
+  }
+
+  document.getElementById("loading").style.display="block";
+
+  try {
+
+    const res = await fetch("/api/generate", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ idea })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("loading").style.display="none";
+
+    if(!res.ok || data.error){
+      alert(data.error || "Erro ao gerar NFT");
+      console.log(data);
+      return;
+    }
+
+    document.getElementById("result").innerHTML =
+      `<pre style="white-space:pre-wrap; font-family:inherit;">${data.result}</pre>`;
+
+  } catch (err) {
+
+    document.getElementById("loading").style.display="none";
+    alert("Erro de conexão com servidor");
+    console.log(err);
+  }
+}
