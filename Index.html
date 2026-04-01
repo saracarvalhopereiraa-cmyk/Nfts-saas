@@ -4,7 +4,22 @@ nft-revenue-engine/
 
 │   ├── api/
 
-│   │   └── generate/
+│   │   └── async function generate(){
+  const idea = document.getElementById("idea").value;
+
+  document.getElementById("loading").style.display="block";
+
+  const res = await fetch("/api/generate", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ idea })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("loading").style.display="none";
+  document.getElementById("result").innerText = data.result;
+}
 
 │   │       └── route.ts
 
@@ -24,7 +39,12 @@ nft-revenue-engine/
 
 ├── components/
 
-│   ├── checkout-modal.tsx
+│   ├── checkout-async function checkout(){
+  const res = await fetch("/api/checkout", { method:"POST" });
+  const data = await res.json();
+
+  window.location = data.url;
+}
 
 │   ├── loading-spinner.tsx
 
